@@ -18,9 +18,9 @@ __email__ = "your email address"
 
 
 class Bubblesort:
-    x = 100
+    x = 300
     y = 200
-    a_list = [5, 192, 21, 2, 0, 93, 4, 7, 1, 22, 8, 3, 12, 1]
+    a_list = [5, 192, 21, 2, 0, 93, 4, 7, 1, 22, 8, 3, 12, 11, 5, 53, 147, 84, 117, 98, 114, 93, 98]
 
     def __init__(self):
         self.root = tk.Tk()
@@ -43,11 +43,11 @@ class Bubblesort:
         self.button = tk.Button(self.root, text='Sort', command=self.callback)
         self.button.grid(row=2, column=1)
         self.button_restart = tk.Button(self.root, text='Restart', command=self.restart_program,
-                                        bd=0, bg="light goldenrod yellow",  highlightcolor="red")
+                                        bd=0, bg="light goldenrod yellow", highlightcolor="red")
         self.button_restart.grid(row=2, column=3)
 
         self.button_exit = tk.Button(self.root, text='Exit', command=self.exit,
-                                     bd=0, bg="light goldenrod yellow",  highlightcolor="red")
+                                     bd=0, bg="light goldenrod yellow", highlightcolor="red")
         self.button_exit.grid(row=2, column=4)
 
         count = 5
@@ -81,35 +81,41 @@ class Bubblesort:
                 time.sleep(0.01)
 
                 # the compared elements should change there color here
-                self.canvas.create_line(element * 5, self.y - self.a_list[element], element * 5, self.y,
-                                        fill="red", activefill="green")
+                
+                self.canvas.create_line(element * 5, self.y , element * 5, self.y - self.a_list[element],
+                                        fill="pink", activefill="green")
+                
+                self.canvas.create_line((element + 1) * 5, self.y, (element + 1) * 5, self.y - self.a_list[element + 1],
+                                        fill="pink", activefill="green")
                 self.canvas.update()
-                self.canvas.create_line(element * 5, self.y - self.a_list[element + 1], element * 5, self.y,
-                                        fill="red", activefill="green")
-                self.canvas.update()
+                
                 
                 # here should the change process be visualized in colors 
                 if self.a_list[element] > self.a_list[element + 1]:
-                    self.canvas.create_line(element * 5, self.y, element * 5, 0,
-                                            fill="light goldenrod yellow", activefill="tomato")
-                    self.canvas.update()
-    
-                    self.canvas.create_line(element * 5, self.y, element * 5, 0,
-                                            fill="light goldenrod yellow", activefill="tomato")
-                    self.canvas.update()
+
                     print(self.a_list[element], self.a_list[element + 1])
                     list_sorted = False
-                    self.a_list[element], self.a_list[element +
+                    self.a_list[element], self.a_list[element + 
                                                       1] = self.a_list[element + 1], self.a_list[element]
-                    time.sleep(0.01)
-                    self.canvas.create_line(element * 5, self.y, element * 5, self.y + self.a_list[element + 1],
-                                            fill="black", activefill="RoyalBlue1")
-                    self.canvas.create_line(element * 5, self.y, element * 5, self.y + self.a_list[element],
-                                            fill="black", activefill="RoyalBlue1")
-                    self.canvas.update()
+                    time.sleep(0.1)
+                    self.canvas.create_line(element * 5, self.y, element * 5, self.y - self.a_list[element],
+                                            fill="black", activefill="RoyalBlue1", width=3)
+                    self.canvas.update()  
+                    self.canvas.create_line((element + 1) * 5, self.y, (element + 1) * 5, self.y - self.a_list[element + 1],
+                                            fill="black", activefill="RoyalBlue1", width=3)
+                    self.canvas.update() 
+                    
+                    
+                                # the compared elements should change there color here
+                self.canvas.create_line(element * 5, self.y , element * 5, self.y - self.a_list[element],
+                                        fill="blue", activefill="green")
+                self.canvas.update_idletasks()
+                self.canvas.create_line((element + 1) * 5, self.y, (element + 1) * 5, self.y - self.a_list[element + 1],
+                                        fill="blue", activefill="green")
+                self.canvas.update_idletasks()
                          
         print(self.a_list)
-        self.canvas.update()  
+
 
 def main():
     b1 = Bubblesort()
