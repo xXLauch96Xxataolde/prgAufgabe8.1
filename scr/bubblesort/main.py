@@ -20,6 +20,7 @@ __email__ = "your email address"
 class Bubblesort:
     x = 100
     y = 200
+    a_list = [5, 192, 21, 2, 0, 93, 4, 7, 1, 22, 8, 3, 12, 1]
 
     def __init__(self):
         self.root = tk.Tk()
@@ -49,6 +50,17 @@ class Bubblesort:
                                      bd=0, bg="light goldenrod yellow",  highlightcolor="red")
         self.button_exit.grid(row=2, column=4)
 
+        count = 5
+        count_2 = 5
+
+        b_list = self.a_list
+        for i in range(len(self.a_list)):
+            self.canvas.create_line(count, self.y, count, self.y - self.a_list[i],
+                                    fill="RoyalBlue1", activefill="tomato")
+
+            self.canvas.update()
+            count += 5
+
         self.root.mainloop()
 
     def restart_program(self):
@@ -59,21 +71,44 @@ class Bubblesort:
         sys.exit()
 
     def callback(self):
-        count = 5
-        count_2 = 5
-        a_list = [5, 192, 21, 2, 1, 93, 4, 7, 1, 22, 8, 3, 12, 1]
-        for i in range(len(a_list)):
-            self.canvas.create_line(count, self.y, count, self.y - a_list[i],
-                                    fill="RoyalBlue1", activefill="tomato")
 
-            self.canvas.update()
-            count += 5
+        list_sorted = False
+        while not list_sorted:
+            list_sorted = True
+            for element in range(0, len(self.a_list) - 1):
 
-        for j in range(len(a_list)):
-            print(a_list[j])
-            # x0, y0, x1, y1,
-            time.sleep(0.1)
+                # x0, y0, x1, y1,
+                time.sleep(0.01)
 
+
+                self.canvas.create_line(element * 5, self.y - self.a_list[element], element * 5, self.y,
+                                        fill="red", activefill="green")
+                self.canvas.update()
+                self.canvas.create_line(element * 5, self.y - self.a_list[element + 1], element * 5, self.y,
+                                        fill="red", activefill="green")
+                self.canvas.update()
+
+                if self.a_list[element] > self.a_list[element + 1]:
+                    self.canvas.create_line(element * 5, self.y, element * 5, 0,
+                                            fill="light goldenrod yellow", activefill="tomato")
+                    self.canvas.update()
+    
+                    self.canvas.create_line(element * 5, self.y, element * 5, 0,
+                                            fill="light goldenrod yellow", activefill="tomato")
+                    self.canvas.update()
+                    print(self.a_list[element], self.a_list[element + 1])
+                    list_sorted = False
+                    self.a_list[element], self.a_list[element +
+                                                      1] = self.a_list[element + 1], self.a_list[element]
+                    time.sleep(0.01)
+                    self.canvas.create_line(element * 5, self.y, element * 5, self.y + self.a_list[element + 1],
+                                            fill="black", activefill="RoyalBlue1")
+                    self.canvas.create_line(element * 5, self.y, element * 5, self.y + self.a_list[element],
+                                            fill="black", activefill="RoyalBlue1")
+                    self.canvas.update()
+                         
+        print(self.a_list)
+        self.canvas.update()  
 
 def main():
     b1 = Bubblesort()
