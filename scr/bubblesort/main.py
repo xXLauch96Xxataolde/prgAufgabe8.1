@@ -80,14 +80,15 @@ class Bubblesort:
                 # x0, y0, x1, y1,
                 time.sleep(0.01)
 
-
+                # the compared elements should change there color here
                 self.canvas.create_line(element * 5, self.y - self.a_list[element], element * 5, self.y,
                                         fill="red", activefill="green")
                 self.canvas.update()
                 self.canvas.create_line(element * 5, self.y - self.a_list[element + 1], element * 5, self.y,
                                         fill="red", activefill="green")
                 self.canvas.update()
-
+                
+                # here should the change process be visualized in colors 
                 if self.a_list[element] > self.a_list[element + 1]:
                     self.canvas.create_line(element * 5, self.y, element * 5, 0,
                                             fill="light goldenrod yellow", activefill="tomato")
