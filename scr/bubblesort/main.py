@@ -4,11 +4,10 @@ Additional information if required and more infos. Complete sentences please.
 """
 
 import tkinter as tk
-from tkinter import Entry
-from tkinter import StringVar
 import time
 import sys
 import os
+import re
 
 __author__ = "123456: John Cleese, 654321: Terry Gilliam"  # put your data here
 __copyright__ = "Copyright 2017/2018 - EPR-Goethe-Uni"
@@ -18,11 +17,14 @@ __email__ = "your email address"
 
 
 class Bubblesort:
-    x = 300
-    y = 200
-    a_list = [5, 192, 21, 2, 0, 93, 4, 7, 1, 22, 8, 3, 12, 11, 5, 53, 147, 84, 117, 98, 114, 93, 98]
+    x = 150
+    y = 220
+    a_list = []
+    values = []
 
     def __init__(self):
+        self.user_question()
+
         self.root = tk.Tk()
 
         self.root.attributes("-topmost", True)  # put the root to foreground
@@ -40,28 +42,57 @@ class Bubblesort:
         self.canvas = tk.Canvas(self.root, bg="light goldenrod yellow", highlightthickness=0)
         self.canvas.config(width=self.x, height=self.y)
         self.canvas.grid(row=1, column=1)
-        self.button = tk.Button(self.root, text='Sort', command=self.callback)
-        self.button.grid(row=2, column=1)
+        self.button_sort = tk.Button(self.root, text='Sort', command=self.callback)
+        self.button_sort.grid(row=2, column=1)
         self.button_restart = tk.Button(self.root, text='Restart', command=self.restart_program,
                                         bd=0, bg="light goldenrod yellow", highlightcolor="red")
-        self.button_restart.grid(row=2, column=3)
+        self.button_restart.grid(row=2, column=2)
 
         self.button_exit = tk.Button(self.root, text='Exit', command=self.exit,
                                      bd=0, bg="light goldenrod yellow", highlightcolor="red")
-        self.button_exit.grid(row=2, column=4)
+        self.button_exit.grid(row=2, column=3)
 
-        count = 5
-        count_2 = 5
-
-        b_list = self.a_list
-        for i in range(len(self.a_list)):
-            self.canvas.create_line(count, self.y, count, self.y - self.a_list[i],
-                                    fill="RoyalBlue1", activefill="tomato")
+        for element in range(0, len(self.a_list) - 1):
+            self.canvas.create_line(element * 5, self.y, element * 5, self.y - self.a_list[element],
+                                    fill="Black", activefill="tomato", width=2)
 
             self.canvas.update()
-            count += 5
 
         self.root.mainloop()
+
+    def value_validator(self):
+        entry_string = self.entry_1.get()
+        list_a = entry_string.split(",")
+        digit_pattern ="{\d}*"
+        for entry in list_a:
+            while(True):
+                try:
+                    self.a_list.append(int(entry))
+                    print(entry)
+                    break
+                except ValueError:
+                    break
+                    pass
+                        
+        print("A_List:",self.a_list)
+        self.user_entry.destroy()
+
+    def user_question(self):
+        self.user_entry = tk.Tk()
+        self.user_entry.attributes("-topmost", True)  # put the root to foreground
+        self.user_entry.configure(bg="light goldenrod yellow")
+        self.user_entry.title("Bubblesort")
+
+        self.label_1 = tk.Label(
+            self.user_entry, text="Pleaser enter comma separated integer values to sort:", bg = "light goldenrod yellow")
+        self.label_1.grid(row=0)
+
+        self.entry_1 = tk.Entry(self.user_entry)
+        self.entry_1.grid(row=1)
+        self.button_1 = tk.Button(self.user_entry, text="Sort", command=self.value_validator)
+        self.button_1.grid(row=2)
+
+        self.user_entry.mainloop()
 
     def restart_program(self):
         python = sys.executable
@@ -70,50 +101,51 @@ class Bubblesort:
     def exit(self):
         sys.exit()
 
+    def clear(self, element):
+        self.canvas.create_line((element * 5), self.y, (element * 5), 0,
+                                fill="light goldenrod yellow", activefill="green", width=2)
+        self.canvas.update()
+        self.canvas.create_line(((element + 1) * 5), self.y, ((element + 1) * 5), 0,
+                                fill="light goldenrod yellow", activefill="green", width=2)
+        self.canvas.update()
+
+    def fill_two_bars(self, element):
+        time.sleep(0.1)
+        y0 = self.y - self.a_list[element]
+        self.canvas.create_line(element * 5, y0, element * 5, self.y,
+                                fill="red", activefill="green", width=2)
+        self.canvas.update()
+        y0 = self.y - self.a_list[element + 1]
+        self.canvas.create_line((element + 1) * 5, y0, (element + 1) * 5, self.y,
+                                fill="red", activefill="green", width=2)
+        self.canvas.update()
+
+    def mark_two_bars(self, element):
+        time.sleep(0.2)
+        y0 = self.y - self.a_list[element]
+        self.canvas.create_line(element * 5, y0, element * 5, self.y,
+                                fill="green", activefill="green", width=2)
+        self.canvas.update()
+        y0 = self.y - self.a_list[element + 1]
+        self.canvas.create_line((element + 1) * 5, y0, (element + 1) * 5, self.y,
+                                fill="green", activefill="green", width=2)
+        self.canvas.update()
+        self.fill_two_bars(element)
+
     def callback(self):
 
         list_sorted = False
         while not list_sorted:
             list_sorted = True
             for element in range(0, len(self.a_list) - 1):
-
-                # x0, y0, x1, y1,
-                time.sleep(0.01)
-
-                # the compared elements should change there color here
-                
-                self.canvas.create_line(element * 5, self.y , element * 5, self.y - self.a_list[element],
-                                        fill="pink", activefill="green")
-                
-                self.canvas.create_line((element + 1) * 5, self.y, (element + 1) * 5, self.y - self.a_list[element + 1],
-                                        fill="pink", activefill="green")
-                self.canvas.update()
-                
-                
-                # here should the change process be visualized in colors 
+                self.mark_two_bars(element)
                 if self.a_list[element] > self.a_list[element + 1]:
-
-                    print(self.a_list[element], self.a_list[element + 1])
                     list_sorted = False
-                    self.a_list[element], self.a_list[element + 
+                    self.a_list[element], self.a_list[element +
                                                       1] = self.a_list[element + 1], self.a_list[element]
-                    time.sleep(0.1)
-                    self.canvas.create_line(element * 5, self.y, element * 5, self.y - self.a_list[element],
-                                            fill="black", activefill="RoyalBlue1", width=3)
-                    self.canvas.update()  
-                    self.canvas.create_line((element + 1) * 5, self.y, (element + 1) * 5, self.y - self.a_list[element + 1],
-                                            fill="black", activefill="RoyalBlue1", width=3)
-                    self.canvas.update() 
-                    
-                    
-                                # the compared elements should change there color here
-                self.canvas.create_line(element * 5, self.y , element * 5, self.y - self.a_list[element],
-                                        fill="blue", activefill="green")
-                self.canvas.update_idletasks()
-                self.canvas.create_line((element + 1) * 5, self.y, (element + 1) * 5, self.y - self.a_list[element + 1],
-                                        fill="blue", activefill="green")
-                self.canvas.update_idletasks()
-                         
+                    self.clear(element)
+                    self.fill_two_bars(element)
+
         print(self.a_list)
 
 
