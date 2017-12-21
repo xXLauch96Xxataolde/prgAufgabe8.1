@@ -33,13 +33,15 @@ class Bubblesort():
         self.root = tk.Tk()
         self.root.attributes("-topmost", True)  # put the root to foreground
         self.root.geometry('+950+50')  # sets the default window position
-        self.root.geometry('320x525')
+        self.root.geometry('320x545')
         self.root.title("Bubblesort")
 
         self.pause = False
         self.sorted_completely = True
         self.i = 0
         self.entries = []
+        self.list = tk.StringVar()
+        self.list.set('Liste')
 
         self.entry_box = tk.Entry(self.root)
         self.entry_box.insert(0, "300, 260, 10, 230, 140, 80, 70, 45, 190, 25")
@@ -48,6 +50,8 @@ class Bubblesort():
         self.confirm.pack()
         self.lw = tk.Canvas(self.root, bg="grey", width=200, height=400)
         self.lw.pack()
+        self.list_label = tk.Label(self.root, textvar=self.list, highlightthickness=2, highlightbackground="black")
+        self.list_label.pack()
         self.pause_button = tk.Button(self.root, text="Pause", command=self.pause_continue_switch)
         self.pause_button.pack()
         self.help_button = tk.Button(self.root, text="Help", command=self.help)
@@ -96,8 +100,15 @@ class Bubblesort():
             except ValueError:
                 to_delete.append(entry)
             i += 1
+
         for entry in to_delete:
             self.entries.remove(entry)
+
+        if to_delete != []:
+            messagebox.showwarning("Error", message=str(to_delete) + " is/are invalid values and "
+                                                                     "has/have been deleted from "
+                                                                     "entries.\n\n"
+                                                                     "Please enter real digits.")
 
         print(self.entries)
         self.clear_canvas()
@@ -113,7 +124,7 @@ class Bubblesort():
 
         Is a while loop (through recursion) which runs until it is not called anymore by loop_slower
         """
-        if self.entries != []:
+        if self.entries != [] and self.pause is False:
             self.sorted_completely = True
             self.i = 0
 
@@ -134,6 +145,7 @@ class Bubblesort():
 
     def update_change(self):
         """This procedure really sorts the numbers."""
+        self.list.set(self.entries)
         print(self.sorted_completely)
         print(self.i)
         if self.entries[self.i] > self.entries[self.i + 1]:
@@ -147,22 +159,28 @@ class Bubblesort():
 
     def create_rect_heigth(self):
         """Initial rectangle constructor. Dynamic Width and Height."""
-        i = 1
-        rect_width = 200 / len(self.entries) - 3
+        if len(self.entries) != 0:
+            i = 1
+            rect_width = 200 / len(self.entries) - 3
+            max_element = max(self.entries)
+            rect_height = 390 / max_element
 
-        for m in self.entries:
-            y = 400 - m
-            rect = self.lw.create_rectangle(i, 400, i + rect_width, y, fill="red")
-            i += rect_width + 3
-            self.rectangles.append(rect)
+            for m in self.entries:
+                y = 400 - rect_height * m
+                rect = self.lw.create_rectangle(i, 400, i + rect_width, y, fill="red")
+                i += rect_width + 3
+                self.rectangles.append(rect)
 
     def update_rect(self):
         """Updated the position of the rectangles."""
         i = 0
         rect_number = 0
         rect_width = 200 / len(self.entries) - 3
+        max_element = max(self.entries)
+        rect_height = 390 / max_element
+
         for m in self.entries:
-            y = 400 - m
+            y = 400 - rect_height * m
             self.lw.coords(self.rectangles[rect_number], i, 400, i + rect_width, y)
             i += rect_width + 3
             rect_number += 1
