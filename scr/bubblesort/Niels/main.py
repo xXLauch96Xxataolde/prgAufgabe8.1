@@ -76,7 +76,9 @@ class Bubblesort():
                                               "by a comma. Then click confirm. "
                                               "The program will then sort the "
                                               "numbers and show a visualization on a canvas. "
-                                              "\nWrong Input is ignored.")
+                                              "\nWrong Input is ignored. Negative numbers are "
+                                              "valid but the bar doesn't show how small the "
+                                              "number is.")
 
     def continue_setter(self):
         if self.pause is True:
@@ -108,7 +110,8 @@ class Bubblesort():
             messagebox.showwarning("Error", message=str(to_delete) + " is/are invalid values and "
                                                                      "has/have been deleted from "
                                                                      "entries.\n\n"
-                                                                     "Please enter real digits.")
+                                                                     "Please enter real digits "
+                                                                     "divided by comma.")
 
         print(self.entries)
         self.clear_canvas()
