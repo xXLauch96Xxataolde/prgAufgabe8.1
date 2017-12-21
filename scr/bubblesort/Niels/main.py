@@ -1,6 +1,7 @@
-"""Docstring: A very short sentence explaining the function. < 79 characters. 
+"""Bubblesort: a visualized sorting algorithm.
 
-Additional information if required and more infos. Complete sentences please.
+The Bubblesort class is created, as an tkinter window, visualizing the process of sorting.
+An instance is created in the main-function.
 """
 
 import tkinter as tk
@@ -24,7 +25,7 @@ class Bubblesort():
     def __init__(self):
         """The Constructor
 
-        Called from the main.py, contructiong the root, which is the basis for the window.
+        Called from the main-function, constructing the root, which is the basis for the window.
         In the constructor we bind every widget to its belonging root window
         """
 
@@ -60,6 +61,7 @@ class Bubblesort():
         self.root.mainloop()
 
     def pause_continue_switch(self):
+        """This procedure pauses and continues the sorting algorithm."""
         if self.pause is True:
             self.pause_button.config(text="Pause")
             self.pause = False
@@ -79,15 +81,6 @@ class Bubblesort():
                                               "\nWrong Input is ignored. Negative numbers are "
                                               "valid but the bar doesn't show how small the "
                                               "number is.")
-
-    def continue_setter(self):
-        if self.pause is True:
-            self.pause = False
-            self.sorting_algorithm()
-
-    def pause_setter(self):
-        if self.pause is False:
-            self.pause = True
 
     def confirm_input(self):
         """This procedure validates and parses the input."""
@@ -130,12 +123,7 @@ class Bubblesort():
         if self.entries != [] and self.pause is False:
             self.sorted_completely = True
             self.i = 0
-
             self.update_change()
-
-            print(self.entries)
-            print(self.sorted_completely)
-
             self.root.after(1000, self.loop_slower)
 
     def loop_slower(self):
@@ -143,19 +131,21 @@ class Bubblesort():
         if self.sorted_completely is False and self.pause is False:
             self.sorting_algorithm()
         else:
-            print("done")
             self.update_rect()
 
     def update_change(self):
         """This procedure really sorts the numbers."""
+        # set the list as text on label
         self.list.set(self.entries)
-        print(self.sorted_completely)
-        print(self.i)
+
+        # the real sorting part with comparison
         if self.entries[self.i] > self.entries[self.i + 1]:
             self.entries[self.i], self.entries[self.i + 1] = self.entries[self.i + 1], self.entries[self.i]
             self.sorted_completely = False
             print("bigger")
         self.update_rect()
+
+        # recursive call to work as loop
         if self.i < len(self.entries) - 2:
             self.i += 1
             self.root.after(100, self.update_change)
@@ -164,6 +154,7 @@ class Bubblesort():
         """Initial rectangle constructor. Dynamic Width and Height."""
         if len(self.entries) != 0:
             i = 1
+            # dynamic width and height (see Doc)
             rect_width = 200 / len(self.entries) - 3
             max_element = max(self.entries)
             rect_height = 390 / max_element
@@ -178,6 +169,7 @@ class Bubblesort():
         """Updated the position of the rectangles."""
         i = 0
         rect_number = 0
+        # dynamic width and height (see Doc)
         rect_width = 200 / len(self.entries) - 3
         max_element = max(self.entries)
         rect_height = 390 / max_element
