@@ -51,7 +51,8 @@ class Bubblesort():
         self.confirm.pack()
         self.lw = tk.Canvas(self.root, bg="grey", width=200, height=400)
         self.lw.pack()
-        self.list_label = tk.Label(self.root, textvar=self.list, highlightthickness=2, highlightbackground="black")
+        self.list_label = tk.Label(self.root, textvar=self.list, highlightthickness=2,
+                                   highlightbackground="black")
         self.list_label.pack()
         self.pause_button = tk.Button(self.root, text="Pause", command=self.pause_continue_switch)
         self.pause_button.pack()
@@ -80,7 +81,8 @@ class Bubblesort():
                                               "numbers and show a visualization on a canvas. "
                                               "\nWrong Input is ignored. Negative numbers are "
                                               "valid but the bar doesn't show how small the "
-                                              "number is.")
+                                              "number is. Be careful, to see the real sorted "
+                                              "list, for long lists, look at the console.")
 
     def confirm_input(self):
         """This procedure validates and parses the input."""
@@ -142,9 +144,9 @@ class Bubblesort():
         if self.entries[self.i] > self.entries[self.i + 1]:
             self.entries[self.i], self.entries[self.i + 1] = self.entries[self.i + 1], self.entries[self.i]
             self.sorted_completely = False
-            print("bigger")
         self.update_rect()
 
+        print(self.entries)
         # recursive call to work as loop
         if self.i < len(self.entries) - 2:
             self.i += 1
